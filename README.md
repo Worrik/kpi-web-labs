@@ -3,7 +3,7 @@
 ## How to run
 1. Create .env files in `users_service/` and root folders (see `env.example`).
 2. Create services.yaml in `api_gateway/` (see `services.yaml.example`).
-3. Run via docker compose:
+3. Run via docker compose (requires v2.20.3 and later):
    ```bash
    docker compose up -d
    ```
