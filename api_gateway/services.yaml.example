@@ -1,0 +1,3 @@
+services:
+  - name: users_service
+    url: http://users-api:8001

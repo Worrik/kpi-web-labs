@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "users-service"
+version = "0.1.0"
+description = ""
+authors = ["Volodymyr"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.8"
+faststream = "^0.5.34"
+dishka = "^1.4.2"
+uvicorn = "^0.34.0"
+sqlalchemy = "^2.0.38"
+alembic = "^1.14.1"
+psycopg = "^3.2.4"
+environs = "^14.1.1"
+aio-pika = "^9.5.4"
+asyncpg = "^0.30.0"
+pyjwt = "^2.10.1"
+pydantic = {extras = ["email"], version = "^2.10.6"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

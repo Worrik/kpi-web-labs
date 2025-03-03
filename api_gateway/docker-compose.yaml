@@ -1,0 +1,10 @@
+name: api-gateway
+
+services:
+  api-gateway:
+    build: .
+    container_name: api-gateway
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app

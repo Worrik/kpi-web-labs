@@ -1,0 +1,9 @@
+services:
+  users-api:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  api-gateway:
+    depends_on:
+      - users-api
