@@ -39,7 +39,7 @@ async def create_post(
         payload={
             "user_id": user_id,
             "text": post.text,
-            "image_url": post.image_url,
+            "image_data": post.image_data,
         },
     )
     return PostSchema(**result)

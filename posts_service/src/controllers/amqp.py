@@ -29,7 +29,7 @@ async def create_post(
     dto = CreatePostDTO(
         user_id=data.user_id,
         text=data.text,
-        image_url=data.image_url,
+        image_data=data.image_data,
     )
     post = await interactor(dto)
     return PostSchema(

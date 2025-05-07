@@ -16,7 +16,7 @@ class PostSchema(BaseModel):
 
 class CreatePostSchema(BaseModel):
     text: str
-    image_url: str | None
+    image_data: str | None
 
 
 class CreateCommentSchema(BaseModel):

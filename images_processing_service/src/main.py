@@ -22,11 +22,8 @@ container = make_async_container(
 
 
 def mount_static_files(app: FastAPI):
-    static_files_config = config.static_files
     app.mount(
-        static_files_config.static_route,
-        StaticFiles(directory=static_files_config.static_dir),
-        name="static",
+        "/static", StaticFiles(directory="/app/static"), name="static"
     )
 
 

@@ -3,6 +3,7 @@ from typing import AsyncIterable
 from dishka import Provider, Scope, from_context, provide
 from faststream.rabbit import RabbitBroker
 
+from src.adapters.aiohttp_gateway_router import AiohttpGatewayRouter, get_aiohttp_session
 from src.config import Config
 from src.utils.broker_provider import BrokerProvider
 from src.utils.jwt_auth import JWTTokenGenerator, JWTTokenValidator
@@ -10,6 +11,8 @@ from src.utils.jwt_auth import JWTTokenGenerator, JWTTokenValidator
 
 class AppProvider(Provider):
     config = from_context(provides=Config, scope=Scope.APP)
+    aiohttp_session = provide(get_aiohttp_session, scope=Scope.APP)
+    gateway_router = provide(AiohttpGatewayRouter, scope=Scope.APP)
 
     @provide(scope=Scope.APP)
     async def get_broker(self, config: Config) -> AsyncIterable[RabbitBroker]:

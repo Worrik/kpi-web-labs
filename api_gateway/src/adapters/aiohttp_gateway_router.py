@@ -60,4 +60,4 @@ class AiohttpSessionEngine:
         return self.session
 
 
-get_session = AiohttpSessionEngine()
+get_aiohttp_session = AiohttpSessionEngine()

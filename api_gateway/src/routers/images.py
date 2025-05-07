@@ -1,4 +1,4 @@
-from dishka.integrations.fastapi import FromDishka
+from dishka.integrations.fastapi import FromDishka, inject
 from fastapi import APIRouter, Response
 
 from src.adapters.aiohttp_gateway_router import AiohttpGatewayRouter
@@ -7,14 +7,14 @@ from src.adapters.aiohttp_gateway_router import AiohttpGatewayRouter
 router = APIRouter(prefix="/images", tags=["images"])
 
 
-# static files redirect
 @router.get("/{path:path}")
+@inject
 async def get_image(path: str, gateway_router: FromDishka[AiohttpGatewayRouter]) -> Response:
     """
     Get image from static files
     """
     body, status_code = await gateway_router(
-        service_name="static_files",
+        service_name="images_processing_service",
         route=f"/images/{path}",
         headers={},
         method="GET",
