@@ -3,6 +3,8 @@ name: travel-app
 include:
   - api_gateway/docker-compose.yaml
   - users_service/docker-compose.yaml
+  - posts_service/docker-compose.yaml
+  - images_processing_service/docker-compose.yaml
 
 services:
   rabbitmq:

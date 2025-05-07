@@ -4,6 +4,18 @@ services:
       rabbitmq:
         condition: service_healthy
 
+  posts-api:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  images-processing-api:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
   api-gateway:
     depends_on:
       - users-api
+      - posts-api
+      - images-processing-api

@@ -6,6 +6,6 @@ import datetime
 @dataclass
 class UserDM:
     id: UUID
+    created_at: datetime.datetime
     name: str
     email: str
-    created_at: datetime.datetime

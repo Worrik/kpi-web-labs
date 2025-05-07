@@ -16,9 +16,9 @@ class UserModel(Base):
     __tablename__ = "users"
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
-    name: Mapped[str] = mapped_column(nullable=False)
-    email: Mapped[str] = mapped_column(nullable=False, unique=True)
     created_at: Mapped[datetime.datetime] = mapped_column(
         nullable=False,
         server_default=sa.sql.func.now(),
     )
+    name: Mapped[str] = mapped_column(nullable=False)
+    email: Mapped[str] = mapped_column(nullable=False, unique=True)

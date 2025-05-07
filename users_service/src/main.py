@@ -6,7 +6,7 @@ from faststream import FastStream
 from faststream.broker.core.usecase import BrokerUsecase
 
 from src.config import Config
-from src.controllers.amqp import ampq_router
+from src.controllers.amqp import amqp_router
 from src.controllers.http import api_router
 from src.infrastructure.broker import new_broker
 from src.ioc import AppProvider
@@ -23,7 +23,7 @@ container = make_async_container(
 def get_faststream_app() -> FastStream:
     faststream_app = FastStream(broker)
     faststream_integration.setup_dishka(container, faststream_app, auto_inject=True)
-    broker.include_router(ampq_router)
+    broker.include_router(amqp_router)
     return faststream_app
 
 

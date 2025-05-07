@@ -1,7 +1,7 @@
-import logging
 from http import HTTPMethod, HTTPStatus
 from typing import Any
 
+import logging
 import aiohttp
 
 from src.exceptions.exceptions import GatewayRouterException, NotFoundException

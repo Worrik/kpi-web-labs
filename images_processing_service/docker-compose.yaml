@@ -1,0 +1,12 @@
+name: images-processing-service
+
+services:
+  images-processing-api:
+    build: .
+    container_name: images-processing-api
+    env_file:
+      - .env
+    ports:
+      - "8003:8003"
+    volumes:
+      - .:/app

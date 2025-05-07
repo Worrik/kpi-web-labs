@@ -14,13 +14,20 @@ class UserRepoImpl(UserRepo):
     def model_to_entity(self, user: UserModel) -> UserDM:
         return UserDM(
             id=user.id,
+            created_at=user.created_at,
             name=user.name,
             email=user.email,
-            created_at=user.created_at,
         )
 
-    async def create(self, name: str, email: str) -> UserDM:
-        user = UserModel(name=name, email=email)
+    async def create(
+        self,
+        name: str,
+        email: str,
+    ) -> UserDM:
+        user = UserModel(
+            name=name,
+            email=email,
+        )
         self.db_session.add(user)
         try:
             await self.db_session.commit()

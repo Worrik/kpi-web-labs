@@ -1,14 +1,12 @@
-from datetime import timedelta
 from typing import AsyncIterable
 from dishka import AnyOf, Provider, Scope, from_context, provide
 from faststream.broker.core.usecase import BrokerUsecase
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from src.application.interactors import LoginUserInteractor, RegisterUserInteractor
-from src.application.interfaces import DBSession, JWTTokenGenerator, UserRepo
+from src.application.interfaces import DBSession, UserRepo
 from src.config import Config
 from src.infrastructure.database import new_session_maker
-from src.infrastructure.jwt_token import JWTTokenGeneratorImpl
 from src.infrastructure.repositories import UserRepoImpl
 
 
@@ -31,11 +29,3 @@ class AppProvider(Provider):
     ) -> AsyncIterable[AnyOf[AsyncSession, DBSession]]:
         async with session_maker() as session:
             yield session
-
-    @provide(scope=Scope.APP)
-    def get_jwt_token_generator(self, config: Config) -> JWTTokenGenerator:
-        return JWTTokenGeneratorImpl(
-            secret_key=config.jwt.secret_key,
-            algorithm=config.jwt.algorithm,
-            expiration_delta=timedelta(seconds=config.jwt.expiration_delta),
-        )
