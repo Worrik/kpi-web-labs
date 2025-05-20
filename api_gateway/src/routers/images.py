@@ -13,6 +13,7 @@ async def get_image(path: str, gateway_router: FromDishka[AiohttpGatewayRouter])
     """
     Get image from static files
     """
+    print(path)
     body, status_code = await gateway_router(
         service_name="images_processing_service",
         route=f"/images/{path}",

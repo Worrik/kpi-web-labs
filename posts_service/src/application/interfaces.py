@@ -32,6 +32,9 @@ class CommentRepo(Protocol):
     @abstractmethod
     async def create_comment(self, post_id: UUID, user_id: UUID, text: str) -> CommentDM: ...
 
+    @abstractmethod
+    async def get_comments(self, post_id: UUID) -> list[CommentDM]: ...
+
 
 class LikeRepo(Protocol):
     @abstractmethod

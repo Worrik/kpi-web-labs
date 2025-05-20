@@ -1,0 +1,16 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install dependencies
+COPY package.json yarn.lock ./
+RUN yarn install
+
+# Copy project files
+COPY . .
+
+# Expose Vite dev server port
+EXPOSE 5173
+
+# Start development server with host flag to allow external access
+CMD ["yarn", "dev", "--host"] 

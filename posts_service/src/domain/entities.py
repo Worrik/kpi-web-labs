@@ -4,6 +4,14 @@ import datetime
 
 
 @dataclass
+class AuthorDM:
+    id: UUID
+    name: str
+    email: str
+    created_at: datetime.datetime
+
+
+@dataclass
 class PostDM:
     id: UUID
     user_id: UUID
@@ -13,6 +21,8 @@ class PostDM:
 
     likes_count: int | None
     comments_count: int | None
+
+    author: AuthorDM | None = None
 
 
 @dataclass

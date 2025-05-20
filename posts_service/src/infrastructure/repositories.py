@@ -74,6 +74,7 @@ class PostRepoImpl(PostRepo):
             )
             .outerjoin(comment_cnt_sq, comment_cnt_sq.c.post_id == PostModel.id)
             .outerjoin(like_cnt_sq, like_cnt_sq.c.post_id == PostModel.id)
+            .order_by(PostModel.created_at.desc())
         )
         result = await self.db_session.execute(query)
         posts = result.all()
@@ -134,6 +135,16 @@ class CommentRepoImpl(CommentRepo):
             await self.db_session.rollback()
             raise IntegrityError
         return self.model_to_entity(comment)
+
+    async def get_comments(self, post_id: UUID) -> list[CommentDM]:
+        query = (
+            sa.select(CommentModel)
+            .where(CommentModel.post_id == post_id)
+            .order_by(CommentModel.created_at.desc())
+        )
+        result = await self.db_session.execute(query)
+        comments = result.scalars().all()
+        return [self.model_to_entity(comment) for comment in comments]
 
 
 class LikeRepoImpl(LikeRepo):

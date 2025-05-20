@@ -8,6 +8,7 @@ from src.application.interactors import (
     CreateLikeInteractor,
     CreatePostInteractor,
     GetPostsInteractor,
+    GetCommentsInteractor,
 )
 
 from src.application.interfaces import CommentRepo, DBSession, LikeRepo, PostRepo
@@ -29,6 +30,7 @@ class AppProvider(Provider):
     create_like_interactor = provide(CreateLikeInteractor, scope=Scope.REQUEST)
     create_comment_interactor = provide(CreateCommentInteractor, scope=Scope.REQUEST)
     change_image_interactor = provide(ChangeImageInteractor, scope=Scope.REQUEST)
+    get_comments_interactor = provide(GetCommentsInteractor, scope=Scope.REQUEST)
 
     @provide(scope=Scope.APP)
     def get_session_maker(self, config: Config) -> async_sessionmaker[AsyncSession]:

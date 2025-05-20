@@ -3,7 +3,7 @@ from dishka import AnyOf, Provider, Scope, from_context, provide
 from faststream.broker.core.usecase import BrokerUsecase
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
-from src.application.interactors import LoginUserInteractor, RegisterUserInteractor
+from src.application.interactors import LoginUserInteractor, RegisterUserInteractor, GetUsersByIdsInteractor
 from src.application.interfaces import DBSession, UserRepo
 from src.config import Config
 from src.infrastructure.database import new_session_maker
@@ -18,6 +18,7 @@ class AppProvider(Provider):
 
     login_user_interactor = provide(LoginUserInteractor, scope=Scope.REQUEST)
     register_user_interactor = provide(RegisterUserInteractor, scope=Scope.REQUEST)
+    get_users_by_ids_interactor = provide(GetUsersByIdsInteractor, scope=Scope.REQUEST)
 
     @provide(scope=Scope.APP)
     def get_session_maker(self, config: Config) -> async_sessionmaker[AsyncSession]:

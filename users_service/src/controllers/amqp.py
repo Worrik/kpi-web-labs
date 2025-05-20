@@ -1,8 +1,9 @@
 from dishka import FromDishka
 from faststream.rabbit import RabbitRouter
+from uuid import UUID
 
-from src.application.dto import LoginUserDTO, RegisterUserDTO
-from src.application.interactors import LoginUserInteractor, RegisterUserInteractor
+from src.application.dto import LoginUserDTO, RegisterUserDTO, GetUsersByIdsDTO
+from src.application.interactors import LoginUserInteractor, RegisterUserInteractor, GetUsersByIdsInteractor
 from src.controllers.schemas import (
     ErrorResponse,
     LoginUserSchema,
@@ -51,3 +52,21 @@ async def login_user(
         name=token.name,
         email=token.email,
     )
+
+
+@amqp_router.subscriber("users.get_by_ids")
+async def get_users_by_ids(
+    user_ids: list[UUID],
+    interactor: FromDishka[GetUsersByIdsInteractor],
+) -> list[UserSchema]:
+    dto = GetUsersByIdsDTO(user_ids=user_ids)
+    users = await interactor(dto)
+    return [
+        UserSchema(
+            id=user.id,
+            created_at=user.created_at,
+            name=user.name,
+            email=user.email,
+        )
+        for user in users
+    ]

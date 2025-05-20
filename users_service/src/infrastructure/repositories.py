@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 import sqlalchemy as sa
+from uuid import UUID
 
 from src.application.interfaces import UserRepo
 from src.domain.entities import UserDM
@@ -41,3 +42,15 @@ class UserRepoImpl(UserRepo):
         result = await self.db_session.execute(query)
         user = result.scalars().first()
         return self.model_to_entity(user) if user else None
+
+    async def get_by_id(self, user_id: UUID) -> UserDM | None:
+        query = sa.select(UserModel).where(UserModel.id == user_id).limit(1)
+        result = await self.db_session.execute(query)
+        user = result.scalars().first()
+        return self.model_to_entity(user) if user else None
+
+    async def get_by_ids(self, user_ids: list[UUID]) -> list[UserDM]:
+        query = sa.select(UserModel).where(UserModel.id.in_(user_ids))
+        result = await self.db_session.execute(query)
+        users = result.scalars().all()
+        return [self.model_to_entity(user) for user in users]

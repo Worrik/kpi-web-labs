@@ -1,7 +1,7 @@
 from dishka.integrations.fastapi import FromDishka, inject
 from fastapi import APIRouter, Depends
 
-from src.schemas.posts import CreateCommentSchema, CreatePostSchema, PostSchema
+from src.schemas.posts import CreateCommentSchema, CreatePostSchema, PostSchema, CommentSchema
 from src.dependencies.jwt_auth import get_user_id
 from src.utils.broker_provider import BrokerProvider
 
@@ -85,3 +85,19 @@ async def comment_post(
         },
     )
     return True
+
+
+@router.get("/{post_id}/comments")
+@inject
+async def get_comments(
+    post_id: str,
+    broker_provider: FromDishka[BrokerProvider],
+) -> list[CommentSchema]:
+    """
+    Get comments for a post
+    """
+    result = await broker_provider.rpc(
+        queue="posts.get_comments",
+        payload=post_id,
+    )
+    return [CommentSchema(**comment) for comment in result]

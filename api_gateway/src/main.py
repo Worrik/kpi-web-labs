@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from dishka import make_async_container
 from dishka.integrations import fastapi as fastapi_integration
 
@@ -17,6 +18,16 @@ container = make_async_container(
 
 def get_app() -> FastAPI:
     app = FastAPI()
+
+    # Add CORS middleware
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     app.include_router(users.router)
     app.include_router(posts.router)
     app.include_router(images.router)

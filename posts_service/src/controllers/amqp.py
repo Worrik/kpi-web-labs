@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from dishka import FromDishka
 from faststream.rabbit import RabbitRouter
 from src.application.dto import ChangeImageDTO, CreateCommentDTO, CreateLikeDTO, CreatePostDTO
@@ -7,6 +9,7 @@ from src.application.interactors import (
     CreateLikeInteractor,
     CreatePostInteractor,
     GetPostsInteractor,
+    GetCommentsInteractor,
 )
 
 from src.controllers.schemas import (
@@ -15,6 +18,8 @@ from src.controllers.schemas import (
     CreateLikeSchema,
     CreatePostSchema,
     PostSchema,
+    CommentSchema,
+    AuthorSchema,
 )
 
 
@@ -40,11 +45,19 @@ async def create_post(
         image_url=post.image_url,
         likes_count=post.likes_count,
         comments_count=post.comments_count,
+        author=AuthorSchema(
+            id=post.author.id,
+            name=post.author.name,
+            email=post.author.email,
+            created_at=post.author.created_at,
+        ),
     )
 
 
 @amqp_router.subscriber("posts.get_all")
-async def get_posts(interactor: FromDishka[GetPostsInteractor]) -> list[PostSchema]:
+async def get_posts(
+    interactor: FromDishka[GetPostsInteractor],
+) -> list[PostSchema]:
     posts = await interactor()
     return [
         PostSchema(
@@ -55,6 +68,12 @@ async def get_posts(interactor: FromDishka[GetPostsInteractor]) -> list[PostSche
             image_url=post.image_url,
             likes_count=post.likes_count,
             comments_count=post.comments_count,
+            author=AuthorSchema(
+                id=post.author.id,
+                name=post.author.name,
+                email=post.author.email,
+                created_at=post.author.created_at,
+            ),
         )
         for post in posts
     ]
@@ -83,6 +102,30 @@ async def create_comment(
         text=data.text,
     )
     await interactor(dto)
+
+
+@amqp_router.subscriber("posts.get_comments")
+async def get_comments(
+    post_id: UUID,
+    interactor: FromDishka[GetCommentsInteractor],
+) -> list[CommentSchema]:
+    comments = await interactor(post_id)
+    return [
+        CommentSchema(
+            id=comment.id,
+            post_id=comment.post_id,
+            user_id=comment.user_id,
+            text=comment.text,
+            created_at=comment.created_at,
+            author=AuthorSchema(
+                id=comment.author.id,
+                name=comment.author.name,
+                email=comment.author.email,
+                created_at=comment.author.created_at,
+            ),
+        )
+        for comment in comments
+    ]
 
 
 @amqp_router.subscriber("posts.change_image")
